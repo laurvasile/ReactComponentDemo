@@ -1,0 +1,19 @@
+.c-week-header {
+  float: left;
+  width: 100%;
+  margin-top: 8px;
+  display: table;
+  padding-bottom: 3px;
+  border-bottom: solid 1px #CCC;
+  margin-bottom: 3px;
+
+  > span {
+    float: left;
+    width: 14.285714285714286%;
+    font-size: 0.6em;
+    text-transform: uppercase;
+    color: #026aa7;
+    font-weight: bold;
+    text-align: center;
+  }
+}

@@ -1,0 +1,29 @@
+.c-datetime-picker {
+  font-size: 16px;
+
+  .date-input {
+    width: 95px;
+    border-width: 1px 0 1px 1px;
+    border-radius: 2px 0 0 2px;
+  }
+
+  .time-input {
+    width: 80px;
+    border-width: 1px 1px 1px 0;
+    border-radius: 0 2px 2px 0;
+    text-align: right;
+  }
+
+  .date-input,.time-input {
+    border-color: #ced4da;
+    border-style: solid;
+    padding: 8px 5px;
+    outline: none;
+
+    &.is-open {
+      box-shadow: inset 0px -2px 0px 0px #026aa7;
+    }
+  }
+}
+
+

@@ -1,0 +1,39 @@
+.c-weeks {
+  float: left;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  height: 140px;
+
+  > div {
+    position: absolute;
+    width: 250px;
+  }
+
+  > .current {
+    left: 0;
+  }
+
+  > .other {
+    left: 250px;
+
+    &.right {
+      left: -250px;
+    }
+  }
+
+  > .sliding {
+    transition: transform 250ms ease;
+    -webkit-transition: -webkit-transform 250ms ease;
+
+    &.left {
+      transform: translate3d(-250px, 0, 0);
+      -webkit-transform: translate3d(-250px, 0, 0);
+    }
+
+    &.right {
+      transform: translate3d(250px, 0, 0);
+      -webkit-transform: translate3d(250px, 0, 0);
+    }
+  }
+}

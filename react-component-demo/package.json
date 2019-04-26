@@ -1,17 +1,26 @@
 {
-  "name": "react-component-demo",
+  "name": "my-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8"
+    "@types/jest": "24.0.11",
+    "@types/node": "11.13.7",
+    "@types/react": "16.8.14",
+    "@types/react-dom": "16.8.4",
+    "classnames": "^2.2.6",
+    "node-sass": "^4.11.0",
+    "normalize.css": "^8.0.1",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "react-scripts": "3.0.0",
+    "typescript": "3.4.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -21,5 +30,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@storybook/react": "^5.0.10",
+    "@types/classnames": "^2.2.7"
+  }
 }

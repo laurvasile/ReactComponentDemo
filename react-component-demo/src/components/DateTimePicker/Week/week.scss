@@ -1,0 +1,41 @@
+.c-week {
+  float: left;
+  width: 100%;
+
+  .day {
+    float: left;
+    width: 14.285714285714286%;
+    font-size: 0.8em;
+    padding: 4px 0;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 3px;
+
+    &:hover {
+      background: #EAEAEA;
+    }
+
+    &.other-month {
+      color: #AAA;
+    }
+
+    &.disabled {
+      color: #E0E0E0;
+      cursor: default;
+
+      &:hover {
+        background: transparent !important;
+      }
+    }
+
+    &.today {
+      background: #68b53e;
+      color: white;
+    }
+
+    &.selected {
+      background: #026aa7;
+      color: white;
+    }
+  }
+}
