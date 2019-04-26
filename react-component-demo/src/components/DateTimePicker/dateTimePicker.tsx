@@ -9,8 +9,9 @@ import classNames from 'classnames';
 type DateTimePickerProps = {
     selected?: Date;
     onSelect?: Function;
-    isTimeVisible?: boolean
-    isCalendarVisible?: boolean
+    isTimeVisible?: boolean;
+    isCalendarVisible?: boolean;
+    placeholder?: string;
 }
 
 type DateTimePickerState = {
@@ -28,16 +29,15 @@ export default class DateTimePicker extends React.Component<DateTimePickerProps,
     constructor(props: DateTimePickerProps) {
         super(props);
 
-        const def = this.props.selected || new Date();
         this.dateInputRef = React.createRef();
         this.timeInputRef = React.createRef();
 
         this.state = {
             id: Helpers.getUniqueIdentifier(),
-            view: DateUtilities.clone(def),
-            selected: DateUtilities.clone(def),
+            view: DateUtilities.clone(this.props.selected || new Date()),
+            selected: this.props.selected ? DateUtilities.clone(this.props.selected) : undefined,
             isCalendarVisible: this.props.isCalendarVisible || false,
-            isTimeVisible: this.props.isTimeVisible ||false
+            isTimeVisible: this.props.isTimeVisible || false
         };
 
         this.showCalendar = this.showCalendar.bind(this);
@@ -46,7 +46,7 @@ export default class DateTimePicker extends React.Component<DateTimePickerProps,
         this.onTimeSelect = this.onTimeSelect.bind(this);
     }
 
-    public dateInputRef: RefObject<any>;
+    public dateInputRef: RefObject<HTMLInputElement>;
     public timeInputRef: RefObject<any>;
 
 
@@ -55,17 +55,33 @@ export default class DateTimePicker extends React.Component<DateTimePickerProps,
     };
 
     componentWillUnmount() {
-       document.removeEventListener('click', this.hideCalendarOnDocumentClick.bind(this));
+        document.removeEventListener('click', this.hideCalendarOnDocumentClick.bind(this));
     };
 
     hideCalendarOnDocumentClick(e: any) {
-        if (!e.target.className.includes(`date-picker-trigger-${this.state.id}`)) {
+        // if (!e.target.className.includes(`date-picker-trigger-${this.state.id}`) &&
+        //     this.parentsHaveClassName(e.target,"c-calendar-" + this.state.id)) {
+        //     this.hideCalendar();
+        //     this.hideTime()
+        // }
+
+        if (!e.target.className.includes(`date-picker-trigger-${this.state.id}`) && !this.parentsHaveClassName(e.target, 'c-calendar-' + this.state.id)) {
             this.hideCalendar();
             this.hideTime()
         }
     };
 
+    parentsHaveClassName(element: any, className: string): boolean {
+        let parent = element;
+        while (parent) {
+            if (parent.className && parent.className.indexOf(className) > -1)
+                return true;
 
+            parent = parent.parentNode;
+        }
+
+        return false;
+    };
 
     setMinDate(date: Date) {
         this.setState({minDate: date});
@@ -76,9 +92,9 @@ export default class DateTimePicker extends React.Component<DateTimePickerProps,
     };
 
     onDateSelect(day: Date) {
-        const newDateTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), this.state.selected.getHours(), this.state.selected.getMinutes(), this.state.selected.getSeconds());
+        const newDateTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), this.state.view.getHours(), this.state.view.getMinutes(), this.state.view.getSeconds());
 
-        this.setState({selected: newDateTime});
+        this.setState({selected: newDateTime, view: newDateTime});
         this.hideCalendar();
 
         if (this.props.onSelect)
@@ -86,9 +102,9 @@ export default class DateTimePicker extends React.Component<DateTimePickerProps,
     };
 
     onTimeSelect(time: Date) {
-        const newDateTime = new Date(this.state.selected.getFullYear(), this.state.selected.getMonth(), this.state.selected.getDate(), time.getHours(), time.getMinutes(), time.getSeconds());
+        const newDateTime = new Date(this.state.view.getFullYear(), this.state.view.getMonth(), this.state.view.getDate(), time.getHours(), time.getMinutes(), time.getSeconds());
 
-        this.setState({selected: newDateTime});
+        this.setState({selected: newDateTime, view: newDateTime});
         this.hideTime();
 
         if (this.props.onSelect)
@@ -138,6 +154,19 @@ export default class DateTimePicker extends React.Component<DateTimePickerProps,
         });
     };
 
+    // onDateChange(e: any) {
+    //     const timestamp = Date.parse(e.target.value);
+    //
+    //     if (!isNaN(timestamp)) {
+    //         const date = new Date(timestamp);
+    //         this.setState({
+    //             selected: date,
+    //             view: date
+    //         });
+    //     }
+    //
+    // }
+
     render() {
         const calendarInputClassName = classNames(`date-input date-picker-trigger-${this.state.id}`, {
             'is-open': this.state.isCalendarVisible
@@ -151,17 +180,18 @@ export default class DateTimePicker extends React.Component<DateTimePickerProps,
                 <input
                     ref={this.dateInputRef}
                     type="text"
+                    placeholder={this.props.placeholder || 'Select...'}
                     className={calendarInputClassName}
-                    readOnly={true}
                     value={DateUtilities.toString(this.state.selected)}
                     onClick={this.showCalendar}
+                    readOnly={true}
                 />
 
                 <input
                     ref={this.timeInputRef}
                     type="text"
-                    className={timeInputClassName}
                     readOnly={true}
+                    className={timeInputClassName}
                     value={DateUtilities.toTimeString(this.state.selected)}
                     onClick={this.showTime}/>
 
@@ -172,10 +202,11 @@ export default class DateTimePicker extends React.Component<DateTimePickerProps,
                           onSelect={this.onDateSelect}
                           minDate={this.state.minDate}
                           maxDate={this.state.maxDate}
-                styles={this.state.calendarStyles}/>
+                          styles={this.state.calendarStyles}/>
 
                 <Time id={this.state.id}
                       selected={this.state.selected}
+                      view={this.state.view}
                       visible={this.state.isTimeVisible}
                       styles={this.state.timeStyles}
                       onSelect={this.onTimeSelect}/>

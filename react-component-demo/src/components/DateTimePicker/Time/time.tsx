@@ -3,11 +3,12 @@ import DateUtilities from '../../../utilities/dateUtilities';
 import './time.scss';
 
 type TimeProps = {
-    selected: Date;
     id: string;
-    onSelect: Function;
+    selected?: Date;
+    view: Date;
     visible: boolean;
     styles?: {}
+    onSelect: Function;
 }
 
 export default class Time extends React.PureComponent<TimeProps> {
@@ -19,7 +20,7 @@ export default class Time extends React.PureComponent<TimeProps> {
     }
 
     buildTimes(): Date[] {
-        const start = new Date(this.props.selected.getFullYear(), this.props.selected.getMonth(), this.props.selected.getDate(), 0, 0, 0, 0);
+        const start = new Date(this.props.view.getFullYear(), this.props.view.getMonth(), this.props.view.getDate(), 0, 0, 0, 0);
         const times = [];
         const interval = 15;
         for (let i = 0; i < 60 / interval * 24; i++) {
@@ -32,7 +33,7 @@ export default class Time extends React.PureComponent<TimeProps> {
         }
 
 
-        const today = this.props.selected.getTime();
+        const today = this.props.view.getTime();
         const closest = times.reduce((a, b) => {
             const diff = a.getTime() - today;
             return diff >= 0 && diff < b.getTime() - today ? a : b;

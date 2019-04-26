@@ -14,4 +14,7 @@ storiesOf('DateTimePicker', module)
     })
     .add('filled', () => {
         return <DateTimePicker selected={new Date()}/>
+    })
+    .add('custom placeholder', () => {
+        return <DateTimePicker placeholder='Custom...'/>
     });
