@@ -8,7 +8,7 @@ The purpose of this project is to demonstrate a custom datetime component locate
 
 > Example usage
 
-```
+```javascript
 import React from 'react';
 import './App.scss';
 import DateTimePicker from './components/DateTimePicker/dateTimePicker';
